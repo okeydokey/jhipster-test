@@ -56,6 +56,25 @@ export class NavbarComponent implements OnInit {
         this.isNavbarCollapsed = true;
     }
 
+    redirect(redirectKey: string) {
+        let redirectUrl: string;
+
+        switch(redirectKey) {
+            case 'google': {
+                redirectUrl = 'https://www.google.com/';
+                break;
+            }
+            case 'facebook': {
+                redirectUrl = 'https://www.facebook.com/';
+                break;
+            }
+        }
+
+        if(redirectUrl) {
+            window.location.href = redirectUrl;
+        }
+    }
+
     isAuthenticated() {
         return this.principal.isAuthenticated();
     }

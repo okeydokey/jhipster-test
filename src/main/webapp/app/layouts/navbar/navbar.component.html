@@ -31,6 +31,29 @@
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
+            <li *jhiHasAnyAuthority="['ROLE_GOOGLE', 'ROLE_FACEBOOK']" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="redirect-menu">
+                    <span>
+                        <i class="fa fa-link" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.redirect.main">Redirect</span>
+                        <b class="caret"></b>
+                    </span>
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li *jhiHasAnyAuthority="'ROLE_GOOGLE'" >
+                        <a class="dropdown-item" routerLink="go-google" routerLinkActive="active" (click)="redirect('google')">
+                            <i class="fa fa-fw fa-google" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.redirect.google">Google</span>
+                        </a>
+                    </li>
+                    <li *jhiHasAnyAuthority="'ROLE_FACEBOOK'" >
+                        <a class="dropdown-item" routerLink="go-facebook" routerLinkActive="active" (click)="redirect('facebook')">
+                            <i class="fa fa-fw fa-facebook" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.redirect.facebook">Facebook</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>

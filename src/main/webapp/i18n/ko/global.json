@@ -31,6 +31,11 @@
                 "userManagement": "사용자 관리",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
+            "redirect": {
+                "main": "바로가기",
+                "google": "Google",
+                "facebook": "Facebook"
+            },
             "language": "언어"
         },
         "form": {
