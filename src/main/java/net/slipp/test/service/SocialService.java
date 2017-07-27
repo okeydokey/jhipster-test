@@ -17,6 +17,9 @@ import org.springframework.social.connect.UserProfile;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
@@ -49,6 +52,37 @@ public class SocialService {
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userSearchRepository = userSearchRepository;
+    }
+
+    @PostConstruct
+    private void init() {
+        try {
+            String[] fieldsToMap = { "id", "about", "age_range", "birthday",
+                "context", "cover", "currency", "devices", "education",
+                "email", "favorite_athletes", "favorite_teams",
+                "first_name", "gender", "hometown", "inspirational_people",
+                "installed", "install_type", "is_verified", "languages",
+                "last_name", "link", "locale", "location", "meeting_for",
+                "middle_name", "name", "name_format", "political",
+                "quotes", "payment_pricepoints", "relationship_status",
+                "religion", "security_settings", "significant_other",
+                "sports", "test_group", "timezone", "third_party_id",
+                "updated_time", "verified", "viewer_can_send_gift",
+                "website", "work" };
+
+            Field field = Class.forName(
+                "org.springframework.social.facebook.api.UserOperations")
+                .getDeclaredField("PROFILE_FIELDS");
+            field.setAccessible(true);
+
+            Field modifiers = field.getClass().getDeclaredField("modifiers");
+            modifiers.setAccessible(true);
+            modifiers.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            field.set(null, fieldsToMap);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void deleteUserSocialConnection(String login) {
@@ -89,7 +123,17 @@ public class SocialService {
         }
         if (!StringUtils.isBlank(email)) {
             Optional<User> user = userRepository.findOneByEmail(email);
+
             if (user.isPresent()) {
+
+                // TODO 기존 등록된 사용자의 경우 해당 ROLE 만 추가.
+                User userWithAuthorities = userRepository.findOneWithAuthoritiesById(user.get().getId());
+                Set<Authority> authorities = userWithAuthorities.getAuthorities();
+                authorities.add(authorityRepository.findOne("ROLE_" + providerId.toUpperCase()));
+
+                userWithAuthorities.setAuthorities(authorities);
+                userRepository.saveAndFlush(userWithAuthorities);
+
                 log.info("User already exist associate the connection to this account");
                 return user.get();
             }
@@ -97,8 +141,11 @@ public class SocialService {
 
         String login = getLoginDependingOnProviderId(userProfile, providerId);
         String encryptedPassword = passwordEncoder.encode(RandomStringUtils.random(10));
-        Set<Authority> authorities = new HashSet<>(1);
+        Set<Authority> authorities = new HashSet<>(2);
         authorities.add(authorityRepository.findOne("ROLE_USER"));
+
+        // TODO 이미 등록된 사용자의 경우 다른 소셜로 로그인 해도 ROLE 추가가 안됨. 수정 필요.
+        authorities.add(authorityRepository.findOne("ROLE_" + providerId.toUpperCase()));
 
         User newUser = new User();
         newUser.setLogin(login);
