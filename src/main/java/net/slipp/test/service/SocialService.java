@@ -126,7 +126,6 @@ public class SocialService {
 
             if (user.isPresent()) {
 
-                // TODO 기존 등록된 사용자의 경우 해당 ROLE 만 추가.
                 User userWithAuthorities = userRepository.findOneWithAuthoritiesById(user.get().getId());
                 Set<Authority> authorities = userWithAuthorities.getAuthorities();
                 authorities.add(authorityRepository.findOne("ROLE_" + providerId.toUpperCase()));
@@ -144,7 +143,6 @@ public class SocialService {
         Set<Authority> authorities = new HashSet<>(2);
         authorities.add(authorityRepository.findOne("ROLE_USER"));
 
-        // TODO 이미 등록된 사용자의 경우 다른 소셜로 로그인 해도 ROLE 추가가 안됨. 수정 필요.
         authorities.add(authorityRepository.findOne("ROLE_" + providerId.toUpperCase()));
 
         User newUser = new User();
