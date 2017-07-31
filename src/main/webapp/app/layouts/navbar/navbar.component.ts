@@ -59,7 +59,7 @@ export class NavbarComponent implements OnInit {
     redirect(redirectKey: string) {
         let redirectUrl: string;
 
-        switch(redirectKey) {
+        switch (redirectKey) {
             case 'google': {
                 redirectUrl = 'https://www.google.com/';
                 break;
@@ -70,7 +70,7 @@ export class NavbarComponent implements OnInit {
             }
         }
 
-        if(redirectUrl) {
+        if (redirectUrl) {
             window.location.href = redirectUrl;
         }
     }
