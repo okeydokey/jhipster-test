@@ -178,4 +178,11 @@
         <addUniqueConstraint tableName="jhi_social_user_connection" columnNames="user_id, provider_id, rank"/>
     </changeSet>
 
+    <changeSet id="00000000000002" author="jhipster">
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/20170731_authorities.csv"
+                  separator=";"
+                  tableName="jhi_authority"/>
+    </changeSet>
+
 </databaseChangeLog>
