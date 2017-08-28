@@ -1,10 +1,13 @@
 package net.slipp.test.service;
 
 import net.slipp.test.domain.Authority;
+import net.slipp.test.domain.Customer;
 import net.slipp.test.domain.User;
 import net.slipp.test.repository.AuthorityRepository;
 import net.slipp.test.config.Constants;
+import net.slipp.test.repository.CustomerRepository;
 import net.slipp.test.repository.UserRepository;
+import net.slipp.test.repository.search.CustomerSearchRepository;
 import net.slipp.test.repository.search.UserSearchRepository;
 import net.slipp.test.security.AuthoritiesConstants;
 import net.slipp.test.security.SecurityUtils;
@@ -44,12 +47,19 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository) {
+    private final CustomerRepository customerRepository;
+
+    private final CustomerSearchRepository customerSearchRepository;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository
+                    , CustomerRepository customerRepository, CustomerSearchRepository customerSearchRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.socialService = socialService;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
+        this.customerRepository = customerRepository;
+        this.customerSearchRepository = customerSearchRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -88,7 +98,7 @@ public class UserService {
             });
     }
 
-    public User createUser(String login, String password, String firstName, String lastName, String email,
+    public User createUser(String login, String password, String firstName, String lastName, String email, String phone,
         String imageUrl, String langKey) {
 
         User newUser = new User();
@@ -101,6 +111,7 @@ public class UserService {
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
         newUser.setEmail(email);
+
         newUser.setImageUrl(imageUrl);
         newUser.setLangKey(langKey);
         // new user is not active
@@ -112,6 +123,14 @@ public class UserService {
         userRepository.save(newUser);
         userSearchRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
+
+        Customer customer = new Customer();
+        customer.setUser(newUser);
+        customer.setPhone(phone);
+        customerRepository.save(customer);
+        customerSearchRepository.save(customer);
+        log.debug("Created Information for Customer: {}", customer);
+
         return newUser;
     }
 

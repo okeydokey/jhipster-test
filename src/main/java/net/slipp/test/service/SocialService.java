@@ -1,9 +1,12 @@
 package net.slipp.test.service;
 
 import net.slipp.test.domain.Authority;
+import net.slipp.test.domain.Customer;
 import net.slipp.test.domain.User;
 import net.slipp.test.repository.AuthorityRepository;
+import net.slipp.test.repository.CustomerRepository;
 import net.slipp.test.repository.UserRepository;
+import net.slipp.test.repository.search.CustomerSearchRepository;
 import net.slipp.test.repository.search.UserSearchRepository;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -42,9 +45,14 @@ public class SocialService {
 
     private final UserSearchRepository userSearchRepository;
 
+    private final CustomerRepository customerRepository;
+
+    private final CustomerSearchRepository customerSearchRepository;
+
     public SocialService(UsersConnectionRepository usersConnectionRepository, AuthorityRepository authorityRepository,
-            PasswordEncoder passwordEncoder, UserRepository userRepository,
-            MailService mailService, UserSearchRepository userSearchRepository) {
+                         PasswordEncoder passwordEncoder, UserRepository userRepository,
+                         MailService mailService, UserSearchRepository userSearchRepository,
+                         CustomerRepository customerRepository, CustomerSearchRepository customerSearchRepository) {
 
         this.usersConnectionRepository = usersConnectionRepository;
         this.authorityRepository = authorityRepository;
@@ -52,6 +60,8 @@ public class SocialService {
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userSearchRepository = userSearchRepository;
+        this.customerRepository = customerRepository;
+        this.customerSearchRepository = customerSearchRepository;
     }
 
     public void deleteUserSocialConnection(String login) {
@@ -126,7 +136,14 @@ public class SocialService {
         newUser.setImageUrl(imageUrl);
 
         userSearchRepository.save(newUser);
-        return userRepository.save(newUser);
+        userRepository.save(newUser);
+
+        Customer customer = new Customer();
+        customer.setUser(newUser);
+        customerRepository.save(customer);
+        customerSearchRepository.save(customer);
+
+        return newUser;
     }
 
     /**

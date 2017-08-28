@@ -51,7 +51,9 @@
             "confirmpassword": "새 비밀번호 확인",
             "confirmpassword.placeholder": "새 비밀번호 확인",
             "email": "이메일",
-            "email.placeholder": "이메일을 입력하세요"
+            "email.placeholder": "이메일을 입력하세요",
+            "phone": "핸드폰번호",
+            "phone.placeholder": "핸드폰번호를 입력하세요"
         },
         "messages": {
             "info": {
@@ -85,6 +87,12 @@
                     "invalid": "잘못된 이메일입니다.",
                     "minlength": "이메일은 최소 5자 이상이어야 합니다",
                     "maxlength": "이메일은 최대 50자 까지입니다."
+                },
+                "phone": {
+                    "required": "핸드폰번호 입력이 필요합니다.",
+                    "invalid": "잘못된 핸드폰번호입니다.",
+                    "minlength": "핸드폰번호은 최소 10자 이상이어야 합니다",
+                    "maxlength": "핸드폰번호은 최대 11자 까지입니다."
                 }
             }
         },

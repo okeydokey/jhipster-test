@@ -25,7 +25,7 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -37,6 +37,7 @@ public class Customer implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
+    @MapsId
     private User user;
 
     @OneToMany(mappedBy = "customer")
