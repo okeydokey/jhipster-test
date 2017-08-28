@@ -1,0 +1,41 @@
+
+<div *ngIf="orderItems">
+    <h2><span jhiTranslate="jhipsterTestApp.orderItems.detail.title">Order Items</span> {{orderItems.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="jhipsterTestApp.orderItems.unitPrice">Unit Price</span></dt>
+        <dd>
+            <span>{{orderItems.unitPrice}}</span>
+        </dd>
+        <dt><span jhiTranslate="jhipsterTestApp.orderItems.quantity">Quantity</span></dt>
+        <dd>
+            <span>{{orderItems.quantity}}</span>
+        </dd>
+        <dt><span jhiTranslate="jhipsterTestApp.orderItems.orders">Orders</span></dt>
+        <dd>
+            <div *ngIf="orderItems.ordersId">
+                <a [routerLink]="['/orders', orderItems.ordersId]">{{orderItems.ordersId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="jhipsterTestApp.orderItems.product">Product</span></dt>
+        <dd>
+            <div *ngIf="orderItems.productId">
+                <a [routerLink]="['/product', orderItems.productId]">{{orderItems.productId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'order-items/'+ orderItems.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

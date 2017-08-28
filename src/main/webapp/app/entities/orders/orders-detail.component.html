@@ -1,0 +1,31 @@
+
+<div *ngIf="orders">
+    <h2><span jhiTranslate="jhipsterTestApp.orders.detail.title">Orders</span> {{orders.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="jhipsterTestApp.orders.orderDate">Order Date</span></dt>
+        <dd>
+            <span>{{orders.orderDate | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="jhipsterTestApp.orders.customer">Customer</span></dt>
+        <dd>
+            <div *ngIf="orders.customerId">
+                <a [routerLink]="['/customer', orders.customerId]">{{orders.customerId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'orders/'+ orders.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

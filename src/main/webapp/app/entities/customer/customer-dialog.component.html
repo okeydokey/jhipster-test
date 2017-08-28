@@ -1,0 +1,48 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCustomerLabel" jhiTranslate="jhipsterTestApp.customer.home.createOrEditLabel">Create or edit a Customer</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!customer.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="customer.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="jhipsterTestApp.customer.customerLevel" for="field_customerLevel">Customer Level</label>
+            <select class="form-control" name="customerLevel" [(ngModel)]="customer.customerLevel" id="field_customerLevel" >
+                <option value="NEW" jhiTranslate="jhipsterTestApp.CustomerLevel.NEW">NEW</option>
+                <option value="SILVER" jhiTranslate="jhipsterTestApp.CustomerLevel.SILVER">SILVER</option>
+                <option value="GOLD" jhiTranslate="jhipsterTestApp.CustomerLevel.GOLD">GOLD</option>
+                <option value="VIP" jhiTranslate="jhipsterTestApp.CustomerLevel.VIP">VIP</option>
+                <option value="VVIP" jhiTranslate="jhipsterTestApp.CustomerLevel.VVIP">VVIP</option>
+                <option value="FIRST" jhiTranslate="jhipsterTestApp.CustomerLevel.FIRST">FIRST</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="jhipsterTestApp.customer.phone" for="field_phone">Phone</label>
+            <input type="text" class="form-control" name="phone" id="field_phone"
+                [(ngModel)]="customer.phone"  />
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="jhipsterTestApp.customer.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="customer.userId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

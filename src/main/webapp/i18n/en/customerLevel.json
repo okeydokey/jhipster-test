@@ -1,0 +1,13 @@
+{
+    "jhipsterTestApp": {
+        "CustomerLevel" : {
+            "null": "",
+            "NEW": "NEW",
+            "SILVER": "SILVER",
+            "GOLD": "GOLD",
+            "VIP": "VIP",
+            "VVIP": "VVIP",
+            "FIRST": "FIRST"
+        }
+    }
+}
